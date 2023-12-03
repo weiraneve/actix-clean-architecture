@@ -53,7 +53,7 @@ src
 
 ## testing support
 
-To run the tests, you can go `src/test` and use the following command:
+To run the tests, you can go `src/tests` and use the following command:
 ```bash
 cargo test
 ```
