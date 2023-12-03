@@ -1,6 +1,8 @@
+use serde::Serialize;
+use sqlx::FromRow;
 use sqlx::types::chrono::NaiveDateTime;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Serialize, FromRow, Clone)]
 pub struct Team {
     pub id: i32,
     pub encrypt_code: String,
