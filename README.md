@@ -51,6 +51,10 @@ src
 └── main.rs
 ```
 
+My ideal architecture in my project would be:
+
+<img src="https://github.com/weiraneve/actix-clean-architecture/assets/60456779/814491fd-7d2c-408d-a90a-5672ff7ca40e" width="50%">
+
 ## testing support
 
 To run the tests, you can go `src/tests` and use the following command:
