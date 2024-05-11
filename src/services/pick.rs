@@ -91,9 +91,9 @@ impl PickServiceImpl {
         )
     }
 
-    async fn update_team_is_picked(&self, team: &mut Team, pick_result: &String) {
+    async fn update_team_is_picked(&self, team: &mut Team, pick_result: &str) {
         team.is_picked = true;
-        team.pick_content = pick_result.clone();
+        team.pick_content = pick_result.to_owned();
         team.update_time = current_time();
         self.team_repository
             .save(team.clone())
@@ -101,10 +101,10 @@ impl PickServiceImpl {
             .expect(SAVE_TEAM_FAILED_ERROR);
     }
 
-    async fn save_result_for_log(&self, team_index: i32, pick_result: &String) {
+    async fn save_result_for_log(&self, team_index: i32, pick_result: &str) {
         let log = Log {
             team_id: team_index,
-            pick_group: pick_result.clone(),
+            pick_group: pick_result.to_owned(),
             time: current_time(),
         };
         self.log_repository
