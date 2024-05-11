@@ -1,5 +1,5 @@
-use async_trait::async_trait;
 use crate::domain::models::log::Log;
+use async_trait::async_trait;
 
 #[async_trait]
 pub trait LogRepository: Send + Sync {

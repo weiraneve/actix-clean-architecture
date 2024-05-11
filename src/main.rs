@@ -1,5 +1,5 @@
-use std::{env, io};
 use std::sync::Arc;
+use std::{env, io};
 
 use actix_web::HttpServer;
 use sqlx::MySqlPool;
@@ -15,7 +15,7 @@ async fn main() -> io::Result<()> {
 
     log::info!("{}{}", STARTING_SERVER_LOG, server_addr);
 
-    HttpServer::new(move || { create_app(pool.clone()) })
+    HttpServer::new(move || create_app(pool.clone()))
         .bind(server_addr)?
         .run()
         .await

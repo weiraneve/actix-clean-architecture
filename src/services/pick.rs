@@ -1,7 +1,5 @@
 use std::sync::Arc;
 
-use async_trait::async_trait;
-use chrono::{FixedOffset, NaiveDateTime, Utc};
 use crate::domain::models::hero::Hero;
 use crate::domain::models::log::Log;
 use crate::domain::models::my_result::MyResult;
@@ -11,6 +9,8 @@ use crate::domain::repositories::hero::HeroRepository;
 use crate::domain::repositories::log::LogRepository;
 use crate::domain::repositories::team::TeamRepository;
 use crate::domain::services::pick::PickService;
+use async_trait::async_trait;
+use chrono::{FixedOffset, NaiveDateTime, Utc};
 
 pub struct PickServiceImpl {
     pub hero_repository: Arc<dyn HeroRepository>,
@@ -24,21 +24,31 @@ impl PickServiceImpl {
         team_repository: Arc<dyn TeamRepository>,
         log_repository: Arc<dyn LogRepository>,
     ) -> Self {
-        PickServiceImpl { hero_repository, team_repository, log_repository }
+        PickServiceImpl {
+            hero_repository,
+            team_repository,
+            log_repository,
+        }
     }
 }
 
 #[async_trait]
 impl PickService for PickServiceImpl {
     async fn pick_heroes(&self, param: PostParam) -> Result<MyResult, actix_web::Error> {
-        let mut team = self.team_repository.get_by_encrypt_code(param.encrypt_code).await
+        let mut team = self
+            .team_repository
+            .get_by_encrypt_code(param.encrypt_code)
+            .await
             .map_err(actix_web::error::ErrorInternalServerError)?;
 
         let mut result = MyResult {
             team_id: team.id,
             data: team.pick_content.clone(),
             time: current_time(),
-            logs: self.log_repository.get_by_team_id(team.id).await
+            logs: self
+                .log_repository
+                .get_by_team_id(team.id)
+                .await
                 .expect(GET_LOGS_FAILED_ERROR),
         };
 
@@ -50,7 +60,10 @@ impl PickService for PickServiceImpl {
 impl PickServiceImpl {
     async fn check_team_is_picked(&self, team: &mut Team, result: &mut MyResult) {
         if !team.is_picked {
-            let pick_heroes = self.hero_repository.get_not_is_pick().await
+            let pick_heroes = self
+                .hero_repository
+                .get_not_is_pick()
+                .await
                 .expect(PICK_HEROES_FAILED_ERROR);
 
             let pick_result = self.get_pick_result(pick_heroes).await;
@@ -64,21 +77,27 @@ impl PickServiceImpl {
     async fn get_pick_result(&self, mut heroes: Vec<Hero>) -> String {
         for hero in &mut heroes {
             hero.is_pick = true;
-            self.hero_repository.save(hero.clone()).await.expect(SAVE_HERO_FAILED_ERROR);
+            self.hero_repository
+                .save(hero.clone())
+                .await
+                .expect(SAVE_HERO_FAILED_ERROR);
         }
 
         let names: Vec<String> = heroes.into_iter().map(|hero| hero.name).collect();
-        format!("[{}]or[{}]",
-                names[..HEROES_AMOUNT / 2].join(","),
-                names[HEROES_AMOUNT / 2..].join(","))
+        format!(
+            "[{}]or[{}]",
+            names[..HEROES_AMOUNT / 2].join(","),
+            names[HEROES_AMOUNT / 2..].join(",")
+        )
     }
-
 
     async fn update_team_is_picked(&self, team: &mut Team, pick_result: &String) {
         team.is_picked = true;
         team.pick_content = pick_result.clone();
         team.update_time = current_time();
-        self.team_repository.save(team.clone()).await
+        self.team_repository
+            .save(team.clone())
+            .await
             .expect(SAVE_TEAM_FAILED_ERROR);
     }
 
@@ -88,13 +107,17 @@ impl PickServiceImpl {
             pick_group: pick_result.clone(),
             time: current_time(),
         };
-        self.log_repository.save(log).await
+        self.log_repository
+            .save(log)
+            .await
             .expect(SAVE_LOG_FAILED_ERROR);
     }
 }
 
 fn current_time() -> NaiveDateTime {
-    Utc::now().with_timezone(&FixedOffset::east_opt(8 * 3600).unwrap()).naive_local()
+    Utc::now()
+        .with_timezone(&FixedOffset::east_opt(8 * 3600).unwrap())
+        .naive_local()
 }
 
 const GET_LOGS_FAILED_ERROR: &str = "Failed to get logs";

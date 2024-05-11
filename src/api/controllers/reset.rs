@@ -1,7 +1,6 @@
-use actix_web::{get, Responder, web};
 use crate::api::dto::team_query::TeamQuery;
 use crate::app_state::AppState;
-
+use actix_web::{get, web, Responder};
 
 pub fn init(cfg: &mut web::ServiceConfig) {
     cfg.service(reset_team);

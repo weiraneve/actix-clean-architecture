@@ -1,6 +1,6 @@
 use serde::Serialize;
-use sqlx::FromRow;
 use sqlx::types::chrono::NaiveDateTime;
+use sqlx::FromRow;
 
 #[derive(Debug, Serialize, FromRow, Clone)]
 pub struct Team {

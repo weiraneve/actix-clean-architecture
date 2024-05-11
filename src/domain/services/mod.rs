@@ -1,6 +1,6 @@
-use std::sync::Arc;
 use crate::domain::services::pick::PickService;
 use crate::domain::services::reset::ResetService;
+use std::sync::Arc;
 
 pub mod pick;
 pub mod reset;

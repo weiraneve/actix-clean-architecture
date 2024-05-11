@@ -1,6 +1,6 @@
+use crate::domain::models::log::Log;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use crate::domain::models::log::Log;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct MyResult {

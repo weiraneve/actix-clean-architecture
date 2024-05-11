@@ -26,7 +26,8 @@ impl TeamRepository for TeamRepositoryImpl {
     }
 
     async fn save(&self, team: Team) -> Result<(), sqlx::Error> {
-        sqlx::query(r#"
+        sqlx::query(
+            r#"
         INSERT INTO `team` (`id`, `encrypt_code`, `pick_content`, `is_picked`, `update_time`)
         VALUES (?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE
@@ -34,14 +35,15 @@ impl TeamRepository for TeamRepositoryImpl {
             `pick_content` = VALUES(`pick_content`),
             `is_picked` = VALUES(`is_picked`),
             `update_time` = VALUES(`update_time`)
-    "#)
-            .bind(team.id)
-            .bind(team.encrypt_code)
-            .bind(team.pick_content)
-            .bind(team.is_picked)
-            .bind(team.update_time)
-            .execute(&*self.pool)
-            .await?;
+    "#,
+        )
+        .bind(team.id)
+        .bind(team.encrypt_code)
+        .bind(team.pick_content)
+        .bind(team.is_picked)
+        .bind(team.update_time)
+        .execute(&*self.pool)
+        .await?;
 
         Ok(())
     }

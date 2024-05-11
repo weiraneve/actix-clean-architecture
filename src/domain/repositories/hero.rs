@@ -8,4 +8,3 @@ pub trait HeroRepository: Send + Sync {
     async fn save(&self, hero: Hero) -> Result<(), sqlx::Error>;
     async fn reset(&self) -> Result<(), sqlx::Error>;
 }
-

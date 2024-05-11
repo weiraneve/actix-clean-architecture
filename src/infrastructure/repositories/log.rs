@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use async_trait::async_trait;
-use sqlx::MySqlPool;
 use crate::domain::models::log::Log;
 use crate::domain::repositories::log::LogRepository;
+use async_trait::async_trait;
+use sqlx::MySqlPool;
 
 pub struct LogRepositoryImpl {
     pub pool: Arc<MySqlPool>,

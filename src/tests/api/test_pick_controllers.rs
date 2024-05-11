@@ -3,8 +3,8 @@ pub mod test_controller {
     use std::{env, io, sync::Arc};
 
     use actix_web::test;
-    use sqlx::MySqlPool;
     use serde_json::json;
+    use sqlx::MySqlPool;
 
     use crate::creat_app::create_app;
     use crate::domain::models::my_result::MyResult;
@@ -21,7 +21,11 @@ pub mod test_controller {
         let request_body = json!({
             "encryptCode": "asd"
         });
-        let resp = test::TestRequest::post().uri(&format!("/")).set_json(&request_body).send_request(&app).await;
+        let resp = test::TestRequest::post()
+            .uri(&format!("/"))
+            .set_json(&request_body)
+            .send_request(&app)
+            .await;
         assert!(resp.status().is_success());
         let pick_result: MyResult = test::read_body_json(resp).await;
         assert_eq!(pick_result.team_id, 9);
@@ -44,5 +48,3 @@ pub mod test_controller {
     const STARTING_SERVER_LOG: &str = "starting HTTP server at ";
     const LOGGER_FILTER_LEVEL: &str = "DEBUG";
 }
-
-

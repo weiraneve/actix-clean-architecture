@@ -1,4 +1,4 @@
-use actix_web::{post, Responder, web};
+use actix_web::{post, web, Responder};
 
 use crate::app_state::AppState;
 use crate::domain::models::post_param::PostParam;

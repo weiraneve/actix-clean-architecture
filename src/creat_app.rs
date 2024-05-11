@@ -1,22 +1,24 @@
 use std::sync::Arc;
 
 use actix_cors::Cors;
-use actix_web::{App, Error, http, web};
 use actix_web::body::MessageBody;
 use actix_web::dev::{ServiceFactory, ServiceRequest, ServiceResponse};
+use actix_web::{http, web, App, Error};
 use sqlx::MySqlPool;
 
 use crate::api::controllers;
 use crate::app_state::AppState;
 
-pub fn create_app(pool: Arc<MySqlPool>) -> App<
+pub fn create_app(
+    pool: Arc<MySqlPool>,
+) -> App<
     impl ServiceFactory<
-        ServiceRequest,
-        Response=ServiceResponse<impl MessageBody>,
-        Error=Error,
-        Config=(),
-        InitError=()
-    > + Sized
+            ServiceRequest,
+            Response = ServiceResponse<impl MessageBody>,
+            Error = Error,
+            Config = (),
+            InitError = (),
+        > + Sized,
 > {
     let app_state = web::Data::new(AppState::new(pool.clone()));
     let cors = Cors::default()

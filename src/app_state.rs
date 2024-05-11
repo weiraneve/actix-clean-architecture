@@ -1,13 +1,12 @@
 use std::sync::Arc;
 
-use sqlx::MySqlPool;
 use crate::domain::services::Service;
 use crate::infrastructure::repositories::hero::HeroRepositoryImpl;
 use crate::infrastructure::repositories::log::LogRepositoryImpl;
 use crate::infrastructure::repositories::team::TeamRepositoryImpl;
 use crate::services::pick::PickServiceImpl;
 use crate::services::reset::ResetServiceImpl;
-
+use sqlx::MySqlPool;
 
 pub struct AppState {
     pub service: Arc<Service>,
