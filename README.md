@@ -61,3 +61,7 @@ To run the tests, you can go `src/tests` and use the following command:
 ```bash
 cargo test
 ```
+
+## tools
+- `cargo fmt` 
+- `cargo clippy`
