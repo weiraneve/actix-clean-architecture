@@ -67,7 +67,7 @@ impl PickServiceImpl {
                 .expect(PICK_HEROES_FAILED_ERROR);
 
             let pick_result = self.get_pick_result(pick_heroes).await;
-            result.data = pick_result.clone();
+            result.data.clone_from(&pick_result);
 
             self.save_result_for_log(team.id, &pick_result).await;
             self.update_team_is_picked(team, &pick_result).await;
@@ -93,7 +93,7 @@ impl PickServiceImpl {
 
     async fn update_team_is_picked(&self, team: &mut Team, pick_result: &str) {
         team.is_picked = true;
-        team.pick_content = pick_result.to_owned();
+        pick_result.clone_into(&mut team.pick_content);
         team.update_time = current_time();
         self.team_repository
             .save(team.clone())
